@@ -5,25 +5,41 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.sun.istack.NotNull;
  
 @Entity
 @Table(name = "product")
 public class Product {
     private Long id;
+    @NotBlank(message = "Enter the product name")
     private String name;
+    @NotBlank(message = "Enter the brand name")
     private String brand;
+    @NotBlank(message = "Enter the Made In information")
     private String madein;
+    @NotNull
     private float price;
  
     public Product() {
     }
  
-    @Id
+    @Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", brand=" + brand + ", madein=" + madein + ", price=" + price
+				+ "]";
+	}
+
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
 
+    @NotEmpty(message = "Enter the product name")
 	public String getName() {
 		return name;
 	}

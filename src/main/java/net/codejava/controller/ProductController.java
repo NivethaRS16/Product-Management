@@ -1,14 +1,21 @@
 package net.codejava.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import net.codejava.model.Product;
@@ -28,17 +35,25 @@ public class ProductController {
     }
     
     @RequestMapping("/new")
-    public String showNewProductPage(Model model) {
+    public String showNewProductPage( Model model) {
         Product product = new Product();
         model.addAttribute("product", product);
          
         return "new_product";
     }
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveProduct(@ModelAttribute("product") Product product) {
+    public String saveProduct(@Valid @ModelAttribute("product") Product product,BindingResult bindResult) {
+    	if(bindResult.hasErrors())
+    	{
+    		System.out.println("errors in product insert");
+    		System.out.println(product);
+    		return "new_product";
+    	}
+    	else
+    	{
         service.save(product);
-         
         return "redirect:/";
+    	}
     }
     
     @RequestMapping("/edit/{id}")
@@ -62,9 +77,25 @@ public class ProductController {
         return "search_product";
     }
     
-    @RequestMapping("/searchproduct/{id}")
-    public String searchNewProductPage(@PathVariable(name = "id") int id) {
+    @RequestMapping("/searchproduct11")
+    public String searchNewProductPage(@RequestParam(defaultValue="") int id) {
         service.find(id);
+        return "view_product";
+    }
+    
+    @GetMapping("/searchproduct2")
+	public String listUsers(Model model, @RequestParam(defaultValue="") int id) {
+    	model.addAttribute("product",service.find(id));
+		return "view_product";
+	}
+ 
+    
+    @RequestMapping("/searchproduct/")
+    public String searchNewProductPage(@RequestParam(name = "id") int id,Model model) {
+        Product p=service.find(id);
+        List<Product> products =new ArrayList<>();
+        products.add(p);
+        model.addAttribute("listProducts", products);
         return "view_product";
     }
 

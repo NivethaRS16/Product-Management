@@ -1,6 +1,7 @@
 package net.codejava.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,13 @@ public class ProductService {
         repo.deleteById(id);
     }
 
-	public void find(long id) {
+    public Product find(long id) {
 		// TODO Auto-generated method stub
-		repo.findById(id);
+		if(repo.findById(id).isPresent()) {
+			return repo.findById(id).get();
+		}
+		else {
+			return new Product();
+		}
 	}
 }

@@ -13,6 +13,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.JoinColumn;
 
 @Entity
@@ -23,15 +29,24 @@ public class User {
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "first_name")
+	@Size(min = 3, max = 40, message = "First name should be between 3 - 40 characters" )
+	@Column(name = "first_name", length = 20)
 	private String firstName;
 	
-	@Column(name = "last_name")
+	@Size(min = 3, max = 40, message = "Last name should be between 3 - 40 characters" )
+	@Column(name = "last_name", length = 40)
 	private String lastName;
 	
+	@Column(length = 45)
+	@NotBlank(message = "Enter your email id")
+	@Email(message = "Enter a proper email id")
 	private String email;
 	
+	@Column(nullable = false)
+	@NotEmpty(message = "Please enter your password.")
+    
 	private String password;
+	
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
@@ -85,6 +100,12 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	@Override
+	public String toString() {
+		return "UserRegistrationDto [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email="
+				+ email + ", password=" + password + ", roles=" + roles + "]";
+	}
+
 	public Collection<Role> getRoles() {
 		return roles;
 	}
