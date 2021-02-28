@@ -1,5 +1,6 @@
 package net.codejava.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,45 +8,47 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
-import com.sun.istack.NotNull;
- 
 @Entity
 @Table(name = "product")
-public class Product {
-    private Long id;
-    @NotBlank(message = "Enter the product name")
+public class Product {		
+	
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+     
+    @Column(length = 64, unique = true, nullable = false)
     private String name;
+     
+    private float price;
+    
     @NotBlank(message = "Enter the brand name")
     private String brand;
+    
     @NotBlank(message = "Enter the Made In information")
     private String madein;
-    @NotNull
-    private float price;
+     
+    public Product(String name, float price) {
+        this.name = name;
+        this.price = price;
+    }
  
     public Product() {
     }
  
+    // getters and setters are not shown for brevity...
+ 
     @Override
 	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", brand=" + brand + ", madein=" + madein + ", price=" + price
+		return "Product [id=" + id + ", name=" + name + ", price=" + price + ", brand=" + brand + ", madein=" + madein
 				+ "]";
 	}
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long getId() {
-        return id;
-    }
-
-    @NotEmpty(message = "Enter the product name")
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
+	public Product(String name, String brand, String madein, float price) {
 		this.name = name;
+		this.price = price;
+		this.brand = brand;
+		this.madein = madein;
 	}
 
 	public String getBrand() {
@@ -64,15 +67,27 @@ public class Product {
 		this.madein = madein;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public float getPrice() {
 		return price;
 	}
 
 	public void setPrice(float price) {
 		this.price = price;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+	}      
 }

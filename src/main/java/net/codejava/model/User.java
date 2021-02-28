@@ -13,6 +13,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -44,7 +45,6 @@ public class User {
 	
 	@Column(nullable = false)
 	@NotEmpty(message = "Please enter your password.")
-    
 	private String password;
 	
 	
@@ -57,7 +57,7 @@ public class User {
 				            name = "role_id", referencedColumnName = "id"))
 	
 	private Collection<Role> roles;
-	
+//	
 	public User() {
 		
 	}
@@ -100,10 +100,11 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	@Override
 	public String toString() {
-		return "UserRegistrationDto [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email="
-				+ email + ", password=" + password + ", roles=" + roles + "]";
+		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", password=" + password + "]";
 	}
 
 	public Collection<Role> getRoles() {

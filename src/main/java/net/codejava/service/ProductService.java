@@ -18,22 +18,22 @@ public class ProductService {
     private ProductRepository repo;
      
     public List<Product> listAll() {
-        return repo.findAll();
+        return (List<Product>) repo.findAll();
     }
      
     public void save(Product product) {
         repo.save(product);
     }
      
-    public Product get(long id) {
+    public Product get(int id) {
         return repo.findById(id).get();
     }
      
-    public void delete(long id) {
+    public void delete(int id) {
         repo.deleteById(id);
     }
 
-    public Product find(long id) {
+    public Product find(int id) {
 		// TODO Auto-generated method stub
 		if(repo.findById(id).isPresent()) {
 			return repo.findById(id).get();
