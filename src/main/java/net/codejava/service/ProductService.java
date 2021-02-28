@@ -2,8 +2,10 @@ package net.codejava.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +13,6 @@ import net.codejava.model.Product;
 import net.codejava.repository.ProductRepository;
  
 @Service
-@Transactional
 public class ProductService {
  
     @Autowired
@@ -21,8 +22,16 @@ public class ProductService {
         return (List<Product>) repo.findAll();
     }
      
-    public void save(Product product) {
+    public void save(Product product) throws Exception {
+    	try {
         repo.save(product);
+    	}
+    	 catch(DataIntegrityViolationException e) {
+    		 throw new Exception("Record Already exists!!");
+    	 }
+    	catch(Exception e) {
+    		throw new Exception("An unexpected error occured!!");
+    	}
     }
      
     public Product get(int id) {
@@ -41,5 +50,10 @@ public class ProductService {
 		else {
 			return new Product();
 		}
+	}
+    
+    public double calculateSum(List<Product> productList) {
+		// TODO Auto-generated method stub
+    	return productList.stream().collect(Collectors.summingDouble(p->p.getPrice()));
 	}
 }

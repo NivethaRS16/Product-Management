@@ -31,6 +31,8 @@ public class ProductController {
     public String viewHomePage(Model model) {
         List<Product> listProducts = service.listAll();
         model.addAttribute("listProducts", listProducts);
+        double sum=service.calculateSum(listProducts);
+        model.addAttribute("sumproduc", sum);
         return "view_product";
     }
     
@@ -42,7 +44,7 @@ public class ProductController {
         return "new_product";
     }
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String saveProduct(@Valid @ModelAttribute("product") Product product,BindingResult bindResult) {
+    public String saveProduct(Model model,@Valid @ModelAttribute("product") Product product,BindingResult bindResult) {
     	if(bindResult.hasErrors())
     	{
     		System.out.println("errors in product insert");
@@ -51,7 +53,12 @@ public class ProductController {
     	}
     	else
     	{
-        service.save(product);
+        try {
+			service.save(product);
+		} catch (Exception e) {
+			 model.addAttribute("errorMessage", e.getMessage());
+			 return "new_product";
+		}
         return "redirect:/";
     	}
     }
