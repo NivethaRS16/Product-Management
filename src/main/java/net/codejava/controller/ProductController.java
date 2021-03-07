@@ -98,12 +98,22 @@ public class ProductController {
  
     
     @RequestMapping("/searchproduct/")
-    public String searchNewProductPage(@RequestParam(name = "id") int id,Model model) {
+    public String searchNewProductPage(@RequestParam(name = "id", defaultValue = "1") int id,Model model) {
         Product p=service.find(id);
         List<Product> products =new ArrayList<>();
-        products.add(p);
-        model.addAttribute("listProducts", products);
-        return "view_product";
+        Optional<Product> productExists = Optional.ofNullable(p);
+        if(productExists.isPresent()) {
+        	products.add(p);
+        	model.addAttribute("listProducts", products);
+        	return "view_product";
+        }
+        else {
+        	Product product = new Product();
+            model.addAttribute("product", product);
+        	model.addAttribute("errorMessage","Product does not exist !! ");
+        	return "search_product";
+        }
+        
     }
 
 }

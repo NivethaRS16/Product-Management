@@ -14,14 +14,15 @@
 	color:red;
 	}
 	</style>
-	
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 </head>
 
 <body>
 	<!-- create navigation bar ( header) -->
 	<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<div class="navbar-header">
+			<div class="navbar-header" style="width:35%">
 				<button type="button" class="navbar-toggle collapsed"
 					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
 					aria-controls="navbar">
@@ -29,7 +30,14 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/">Product Management</a>
+				<a class="navbar-brand" href="/" ><span class="material-icons" style="margin-right: 12px;font-size:40px">home</span></a>
+				
+			</div>
+			<div class="navbar-header" style="width:30%"><h2 style="color:white;font-weight:bolder">Product Management</h2></div>
+			<div style="margin-top:10px;width:35%" class="navbar-header">
+			<a th:href="@{/logout}" style="float:right;">
+						<span class="material-icons" style="font-size:40px" sec:authorize="isAuthenticated()">logout</span>
+					</a>
 			</div>
 		</div>
 	</nav>
@@ -73,7 +81,7 @@
                     </div>
                 </tr>
                 <span th:if="${errorMessage}" class="error-message"  th:text="${errorMessage}">Error</span>
-                <br>                    
+                <br> <br>                   
                 <tr>
                     <td colspan="2"><button type="submit" class="btn btn-success">Save</button> </td>
                 </tr>

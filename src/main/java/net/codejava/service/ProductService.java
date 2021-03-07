@@ -1,13 +1,12 @@
 package net.codejava.service;
 
 import java.util.List;
-import java.util.Optional;
+
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import net.codejava.model.Product;
 import net.codejava.repository.ProductRepository;
@@ -27,10 +26,10 @@ public class ProductService {
         repo.save(product);
     	}
     	 catch(DataIntegrityViolationException e) {
-    		 throw new Exception("Record Already exists!!");
+    		 throw new Exception("Product with same name already exists!!");
     	 }
     	catch(Exception e) {
-    		throw new Exception("An unexpected error occured!!");
+    		throw new Exception("An unexpected error occured!! Please try again");
     	}
     }
      
@@ -48,7 +47,7 @@ public class ProductService {
 			return repo.findById(id).get();
 		}
 		else {
-			return new Product();
+			return null;
 		}
 	}
     
